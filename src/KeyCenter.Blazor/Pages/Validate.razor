@@ -1,0 +1,57 @@
+﻿@page "/Validate"
+
+<form action="#">
+    <fieldset>
+        <div class="form-group">
+            <label>授权码</label>
+            <textarea class="form-control" rows="12" @bind="license"></textarea>
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-primary @(isLoading ? "disabled" : "")" @onclick="ValidateFunc">
+                <div style="display: @(isLoading ? "inline" : "none")">
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    验证中...
+                </div>
+                <div style="display: @(isLoading ? "none" : "inline")">
+                    确定
+                </div>
+            </button>
+        </div>
+        <div class="form-group" style="display: @(string.IsNullOrEmpty(result) ? "none" : "inline")">
+            <div class="card">
+                <div class="card-header">
+                    结果
+                </div>
+                <div class="card-body">
+                    <pre id="result">@result</pre>
+                    <button type="button" class="btn btn-secondary" onclick="select_all_and_copy(document.getElementById('result'))">复制</button>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</form>
+
+@code {
+    private string license;
+    private string result;
+    private bool isLoading = false;
+
+    private async Task ValidateFunc()
+    {
+        result = null;
+        isLoading = true;
+        try
+        {
+            await Task.Delay(3000);
+            result = Agent.Instance.KeyCenterServer.Validate(license);
+        }
+        catch (Exception ex)
+        {
+            result = ex.ToString();
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}

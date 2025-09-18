@@ -1,0 +1,10 @@
+﻿{
+  "DefaultId": "KeyCenter.Blazor",
+  "Name": "齐云北向_HTTP",
+  "Version": "1.0.x.x",
+  "Description": "[齐云北向_HTTP]是连接齐云对外提供HTTP北向接口的程序。",
+  "Tags": [ "齐云北向" ],
+  "Platform": [ "any" ],
+  "Runtime": [ "dotnet-8.0" ],
+  "AgentStartup": "KeyCenter.Blazor.dll"
+}

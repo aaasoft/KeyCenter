@@ -1,0 +1,55 @@
+﻿@inject NavigationManager NavigationManager
+
+<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">@Agent.Instance.Config.Title</a>
+    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <ul class="nav flex-column">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> 欢迎
+            </NavLink>
+        </li>
+        @foreach (var menuItem in menuItemList)
+        {
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="@menuItem.Url">
+                    <span class="@menuItem.Class" aria-hidden="true"></span> @menuItem.Name
+                </NavLink>
+            </li>
+        }
+    </ul>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private List<MenuItem> menuItemList;
+
+    private class MenuItem
+    {
+        public string Url { get; set; }
+        public string Class { get; set; }
+        public string Name { get; set; }
+    }
+
+    protected override void OnInitialized()
+    {
+        menuItemList = new List<MenuItem>();
+        menuItemList.Add(new MenuItem() { Url = "Validate", Class = "oi oi-list-rich", Name = "验证" });
+        if (NavigationManager.Uri.EndsWith("/Auth"))
+        {
+            menuItemList.Add(new MenuItem() { Url = "Auth", Class = "oi oi-plus", Name = "授权" });
+        }
+    }
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

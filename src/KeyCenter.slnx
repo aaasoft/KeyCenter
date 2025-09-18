@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="KeyCenter.Blazor/KeyCenter.Blazor.csproj" />
+  <Project Path="KeyCenter.Core/KeyCenter.Core.csproj" />
+  <Project Path="_build/_build.csproj" />
+</Solution>

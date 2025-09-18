@@ -1,0 +1,17 @@
+﻿<select class="form-control" @bind="SelectedId">
+    @foreach (var product in Agent.Instance.KeyCenterServer.GetProducts())
+    {
+        <option value="@product.Id">@product.Name</option>
+    }
+</select>
+@code {
+    [Parameter]
+    public string SelectedId { get; set; }
+    [Parameter]
+    public EventCallback<string> SelectedIdChanged { get; set; }
+
+    protected override void OnInitialized()
+    {
+        SelectedId = Agent.Instance.KeyCenterServer.GetProducts().FirstOrDefault()?.Id;
+    }
+}

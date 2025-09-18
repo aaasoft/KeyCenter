@@ -1,0 +1,106 @@
+﻿@page "/Auth"
+@using Radzen.Blazor
+
+<form action="#">
+    <fieldset>
+        <div class="form-group">
+            <label>产品</label>
+            <ProductSelect @ref="productSelect"></ProductSelect>
+        </div>
+        <div class="form-group">
+            <label>机器码</label>
+            <input type="text" class="form-control" @bind="machineId">
+        </div>
+        <div class="form-group">
+            <label>授权时间</label>
+            <div>
+                <RadzenDatePicker @bind-Value="startTime" />
+                <RadzenDatePicker @bind-Value="endTime" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label>密码</label>
+            <input type="password" class="form-control" @bind="password">
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary @(isLoading ? "disabled" : "")" type="button" @onclick="Func">
+                <div style="display: @(isLoading ? "inline" : "none")">
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    授权中...
+                </div>
+                <div style="display: @(isLoading ? "none" : "inline")">
+                    确定
+                </div>
+            </button>
+        </div>
+        <div class="form-group" style="display: @(string.IsNullOrEmpty(result) ? "none" : "inline")">
+            <div class="card">
+                <div class="card-header">
+                    结果
+                </div>
+                <div class="card-body">
+                    <pre id="result">@result</pre>
+                    <button type="button" class="btn btn-secondary" onclick="select_all_and_copy(document.getElementById('result'))">复制</button>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</form>
+
+@code {
+    private ProductSelect productSelect;
+    private string machineId;
+    private DateTime? startTime;
+    private DateTime? endTime;
+    private string password;
+
+    private string result;
+    private bool isLoading = false;
+
+    protected override void OnInitialized()
+    {
+        var tmpTime = DateTime.Now;
+        tmpTime = new DateTime(tmpTime.Year, tmpTime.Month, tmpTime.Day);
+        startTime = tmpTime;
+        tmpTime = tmpTime.AddYears(1);
+        endTime = tmpTime;
+    }
+
+    private async Task Func()
+    {
+        result = null;
+        isLoading = true;
+        try
+        {
+            if (string.IsNullOrEmpty(machineId))
+            {
+                result = "请先输入机器码！";
+                return;
+            }
+            if (startTime == null)
+            {
+                result = "未设置授权起始时间！";
+                return;
+            }
+            if (endTime == null)
+            {
+                result = "未设置授权结束时间！";
+                return;
+            }
+            await Task.Delay(3000);
+
+            if (Agent.Instance.Config.Password != password)
+                throw new IOException("没有权限");
+            var product = productSelect.SelectedId;
+            result = Agent.Instance.KeyCenterServer.GenerateLicenseKey(machineId, product, startTime.Value, endTime.Value);
+        }
+        catch (Exception ex)
+        {
+            result = ex.ToString();
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}
