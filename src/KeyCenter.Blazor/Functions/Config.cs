@@ -14,7 +14,7 @@ public class Config : ModelJsonConfig<ConfigModel>
     public Config() : base(
         ConfigModelSerializerContext.Default.ConfigModel,
         AgentContext.Container?.ContainerFolder ?? AppContext.BaseDirectory,
-        () => AgentContext.IsContainerRuning)
+        () => AgentContext.Container.AutoStart)
     {
         Instance = this;
     }
@@ -58,6 +58,33 @@ public class Config : ModelJsonConfig<ConfigModel>
                     Input_AllowBlank = false,
                     Type =  FieldType.InputText,
                     Value = model.Password,
+                    Input_ReadOnly = isReadOnly
+                },
+                new()
+                {
+                    Id =  nameof(ConfigModel.Products),
+                    Name = "产品",
+                    Input_AllowBlank = false,
+                    Type =  FieldType.InputTextArea,
+                    Value = model.Products,
+                    Input_ReadOnly = isReadOnly
+                },
+                new()
+                {
+                    Id =  nameof(ConfigModel.PublicKey),
+                    Name = "公钥",
+                    Input_AllowBlank = false,
+                    Type =  FieldType.InputTextArea,
+                    Value = model.PublicKey,
+                    Input_ReadOnly = isReadOnly
+                },
+                new()
+                {
+                    Id =  nameof(ConfigModel.PrivateKey),
+                    Name = "私钥",
+                    Input_AllowBlank = false,
+                    Type =  FieldType.InputTextArea,
+                    Value = model.PrivateKey,
                     Input_ReadOnly = isReadOnly
                 }
             ]

@@ -26,9 +26,14 @@ public class Agent : AbstractAgent
     }
 
     public IHostBuilder CreateHostBuilder(string[] args) =>
+
+    
         Host.CreateDefaultBuilder(args)
             .ConfigureWebHostDefaults(webBuilder =>
             {
+#if !DEBUG
+                webBuilder.UseContentRoot(AgentContext.Container.ImageFolder);
+#endif
                 webBuilder.ConfigureLogging(logging => logging.ClearProviders());
                 webBuilder.UseStartup<Startup>();
                 webBuilder.UseUrls(Config.Urls.Split(new char[] { ',', ';' }));
