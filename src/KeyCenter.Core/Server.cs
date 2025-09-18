@@ -31,20 +31,30 @@ public class Server
         {
             var sb = new StringBuilder();
 
-            List<Byte> byteList = new List<byte>();
+            var byteList = new List<byte>();
             //此16字节为ID
             byteList.AddRange(Guid.NewGuid().ToByteArray());
             //此16字节为机器码
+            byte[] machineIdBuffer;
             try
             {
-                byteList.AddRange(BytesUtils.GetBytesFromByteString(machineId));
+                machineIdBuffer = BytesUtils.GetBytesFromByteString(machineId);
+            }
+            catch
+            {
+                return $"无效的机器码：[{machineId}]";
+            }
+            try
+            {
+                if (machineIdBuffer.Length != 16) ;
+                byteList.AddRange(machineIdBuffer);
             }
             catch
             {
                 return $"无效的机器码：[{machineId}]";
             }
             //此16字节为产品名称Hash值
-            byteList.AddRange(Md5Utils.ComputeMD5Hash(new UTF8Encoding(false).GetBytes(product)));
+                byteList.AddRange(Md5Utils.ComputeMD5Hash(new UTF8Encoding(false).GetBytes(product)));
             //此8字节(大端字节序)为生效时间的Ticks
             byteList.AddRange(BytesUtils.GetBytesWithBigEndian(startTime.Ticks));
             //此8字节(大端字节序)为过期时间的Ticks

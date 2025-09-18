@@ -2,7 +2,7 @@
 
 namespace KeyCenter.Core
 {
-    internal class License
+    public class License
     {
         private byte[] licenseIdBytes = new byte[16];
         private byte[] machineIdBytes = new byte[16];
