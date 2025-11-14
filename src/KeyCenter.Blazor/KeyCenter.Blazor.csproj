@@ -12,7 +12,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="YiQiDong.Core" Version="2.6.6" />
-		<PackageReference Include="Radzen.Blazor" Version="8.3.1" />
 	</ItemGroup>
 
 	<ItemGroup>

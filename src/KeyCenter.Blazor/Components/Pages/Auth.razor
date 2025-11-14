@@ -1,5 +1,4 @@
 ﻿@page "/Auth"
-@using Radzen.Blazor
 @using YiQiDong.Core.Utils
 
 <form action="#">
@@ -14,9 +13,16 @@
         </div>
         <div class="form-group">
             <label>授权时间</label>
-            <div>
-                <RadzenDatePicker @bind-Value="startTime" />
-                <RadzenDatePicker @bind-Value="endTime" />
+            <div class="form-row">
+                <div class="col-auto">
+                    <input type="date" class="form-control" @bind="startTime" />
+                </div>                
+                <div class="col-auto">
+                    <span class="form-control border-0">至</span>
+                </div>
+                <div class="col-auto">
+                    <input type="date" class="form-control" @bind="endTime" />
+                </div>
             </div>
         </div>
         <div class="form-group">
