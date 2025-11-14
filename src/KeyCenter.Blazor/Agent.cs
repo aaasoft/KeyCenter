@@ -42,20 +42,25 @@ public class Agent : AbstractAgent
         cts = new CancellationTokenSource();
         var token = cts.Token;
 
-        var builder = WebApplication.CreateBuilder();
+        var builder = WebApplication.CreateBuilder(new WebApplicationOptions()
+        {
+#if !DEBUG
+            ContentRootPath = AgentContext.Container.ImageFolder
+#endif
+        });
+
         // Add services to the container.
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
         builder.WebHost.UseUrls(Config.Urls);
 
-        app = builder.Build();
+            app = builder.Build();
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
         {
             app.UseExceptionHandler("/Error", createScopeForErrors: true);
         }
-
-        app.UseStaticFiles();
+        app.MapStaticAssets();
         app.UseAntiforgery();
 
         app.MapRazorComponents<App>()
