@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
+using KeyCenter.Blazor.Components;
 using KeyCenter.Core;
-using KeyCenter.Core.Utils;
 using YiQiDong.Agent;
 using YiQiDong.Core;
 
@@ -10,7 +10,7 @@ public class Agent : AbstractAgent
 {
     public static Agent Instance { get; private set; }
     private CancellationTokenSource cts;
-    private IHost host;
+    private WebApplication app;
     public ConfigModel Config { get; private set; }
     public Server KeyCenterServer { get; private set; }
 
@@ -24,20 +24,6 @@ public class Agent : AbstractAgent
         base.Init();
         AddFunction(new Functions.Config());
     }
-
-    public IHostBuilder CreateHostBuilder(string[] args) =>
-
-    
-        Host.CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-#if !DEBUG
-                webBuilder.UseContentRoot(AgentContext.Container.ImageFolder);
-#endif
-                webBuilder.ConfigureLogging(logging => logging.ClearProviders());
-                webBuilder.UseStartup<Startup>();
-                webBuilder.UseUrls(Config.Urls.Split(new char[] { ',', ';' }));
-            });
 
     public override void Start()
     {
@@ -55,7 +41,25 @@ public class Agent : AbstractAgent
 
         cts = new CancellationTokenSource();
         var token = cts.Token;
-        host = CreateHostBuilder([]).Build();
+
+        var builder = WebApplication.CreateBuilder();
+        // Add services to the container.
+        builder.Services.AddRazorComponents()
+            .AddInteractiveServerComponents();
+        builder.WebHost.UseUrls(Config.Urls);
+
+        app = builder.Build();
+        // Configure the HTTP request pipeline.
+        if (!app.Environment.IsDevelopment())
+        {
+            app.UseExceptionHandler("/Error", createScopeForErrors: true);
+        }
+
+        app.UseStaticFiles();
+        app.UseAntiforgery();
+
+        app.MapRazorComponents<App>()
+            .AddInteractiveServerRenderMode();
 
         Task.Run(() =>
         {
@@ -65,7 +69,7 @@ public class Agent : AbstractAgent
                     return;
                 try
                 {
-                    host.StartAsync().Wait();
+                    app.Run();
                     break;
                 }
                 catch (Exception ex)
@@ -87,7 +91,7 @@ public class Agent : AbstractAgent
 
         try
         {
-            host.Dispose();
+            app.DisposeAsync();
         }
         catch { }
         base.Stop();

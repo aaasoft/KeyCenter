@@ -1,5 +1,6 @@
 ﻿@page "/Auth"
 @using Radzen.Blazor
+@using YiQiDong.Core.Utils
 
 <form action="#">
     <fieldset>
@@ -96,7 +97,7 @@
         }
         catch (Exception ex)
         {
-            result = ex.ToString();
+            result = ExceptionUtils.GetExceptionMessage(ex);
         }
         finally
         {
