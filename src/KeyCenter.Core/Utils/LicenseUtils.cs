@@ -31,10 +31,10 @@ namespace KeyCenter.Core.Utils
             var wmicProgramPath = GetWmicProgramPath();
             if(string.IsNullOrEmpty(wmicProgramPath))
                 return null;
-            var ret = ProcessUtils.ExecuteShell($"\"{wmicProgramPath}\" {cmd}");
+            var ret = ProcessUtils.ExecuteShell($"{wmicProgramPath} {cmd}");
             if(ret.ExitCode==0)
             {
-                var lines = ret.Output.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+                var lines = ret.Output.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
                 if (lines.Length >= 2)
                     return string.Join(',', lines.Skip(1));
             }
@@ -45,7 +45,9 @@ namespace KeyCenter.Core.Utils
         {
             using (var powerShellCommandContext = new PowerShellCommandContext())
             {
+                powerShellCommandContext.Open();
                 var ret = powerShellCommandContext.ExecuteCommand(cmd, true);
+                powerShellCommandContext.Close();
                 if (ret.ExitCode == 0)
                 {
                     var lines = ret.Output;
@@ -148,7 +150,7 @@ namespace KeyCenter.Core.Utils
                     var ret = ProcessUtils.ExecuteShell("lsblk -d -o SERIAL");
                     if (ret.ExitCode == 0)
                     {
-                        var lines = ret.Output.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+                        var lines = ret.Output.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
                         if (lines.Length >= 2)
                             return string.Join(',', lines.Skip(1));
                     }
