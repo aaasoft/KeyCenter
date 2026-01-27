@@ -14,7 +14,7 @@ public class BytesUtils
     }
 
     //得到大端字节序的字节数组
-    public static Int64 GetInt64FromBytesWithBigEndian(byte[] buffer)
+    public static long GetInt64FromBytesWithBigEndian(byte[] buffer)
     {
         if (BitConverter.IsLittleEndian)
             buffer = ReveseByteOrder(buffer);
@@ -22,7 +22,7 @@ public class BytesUtils
     }
 
     //得到大端字节序的字节数组
-    public static byte[] GetBytesWithBigEndian(Int64 number)
+    public static byte[] GetBytesWithBigEndian(long number)
     {
         byte[] data = BitConverter.GetBytes(number);
         if (BitConverter.IsLittleEndian)
@@ -31,7 +31,7 @@ public class BytesUtils
     }
 
     //从16进制字节字符串转换为字节数组
-    public static byte[] GetBytesFromByteString(String data)
+    public static byte[] GetBytesFromByteString(string data)
     {
         if (data.Length % 2 != 0)
             throw new FormatException("字符个数非2的倍数！");

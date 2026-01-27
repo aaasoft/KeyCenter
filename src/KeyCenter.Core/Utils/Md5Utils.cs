@@ -16,11 +16,5 @@ namespace KeyCenter.Core.Utils
             var md5 = MD5.Create();
             return md5.ComputeHash(data);
         }
-
-        public static byte[] ComputeMD5Hash(Stream stream)
-        {
-            var md5 = MD5.Create();
-            return md5.ComputeHash(stream);
-        }
     }
 }
