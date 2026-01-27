@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
+		<Description>授权中心核心库</Description>
+		<Version>2026.1.127</Version>
   </PropertyGroup>
 
   <ItemGroup>
