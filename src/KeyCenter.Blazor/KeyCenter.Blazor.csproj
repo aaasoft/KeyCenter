@@ -11,7 +11,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="YiQiDong.Core" Version="2026.5.113" />
+		<PackageReference Include="YiQiDong.Core" Version="2026.14.320" />
 	</ItemGroup>
 
 	<ItemGroup>
