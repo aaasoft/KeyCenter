@@ -3,7 +3,12 @@
   "Name": "授权中心",
   "Version": "1.0.x.x",
   "Description": "[授权中心]是生成授权码和验证授权码的程序。",
-  "Platform": [ "any" ],
-  "Runtime": [ "dotnet-10.0" ],
+  "Platform": [
+    "any"
+  ],
+  "Runtime": [
+    "dotnet-10.0"
+  ],
+  "AgentExecute": "dotnet",
   "AgentStartup": "KeyCenter.Blazor.dll"
 }
