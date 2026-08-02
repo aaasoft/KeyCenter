@@ -48,6 +48,7 @@ public class Agent : AbstractAgent
             ContentRootPath = AgentContext.Container.ImageFolder
 #endif
         });
+        builder.Logging.ClearProviders();
 
         // Add services to the container.
         builder.Services.AddRazorComponents()
