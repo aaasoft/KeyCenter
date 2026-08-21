@@ -1,5 +1,6 @@
 ﻿@page "/Auth"
 @using Quick.Utils
+@using YiQiDong.Agent
 @using YiQiDong.Core.Utils
 
 <form action="#">
@@ -101,6 +102,7 @@
                 throw new IOException("没有权限");
             var product = productSelect.SelectedId;
             result = Agent.Instance.KeyCenterServer.GenerateLicenseKey(machineId, product, startTime.Value, endTime.Value);
+            AgentContext.LogInfo($"已为[{machineId}]生成[{product}]有效期为[{startTime.Value:yyyy-MM-dd}-{endTime.Value:yyyy-MM-dd}]的授权码");
         }
         catch (Exception ex)
         {
