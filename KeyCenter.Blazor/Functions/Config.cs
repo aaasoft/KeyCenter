@@ -24,7 +24,6 @@ public class Config : ModelJsonConfig<ConfigModel>
         var model = requestModel ?? Model;
         return new FieldForGet()
         {
-            Id = "WebConfig",
             Type = FieldType.ContainerGroup,
             Name = "Web配置",
             Children =
@@ -97,7 +96,6 @@ public class Config : ModelJsonConfig<ConfigModel>
         {
             new FieldForGet()
             {
-                Id="Tab",
                 Type = FieldType.ContainerTab,
                 Children =
                 [
